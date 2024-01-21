@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from rest_framework import status, generics
 from rest_framework.response import Response
-from .serializers import CustomTokenObtainPairSerializer, UserSerializer
+from .serializers import CustomTokenObtainPairSerializer, UserSerializer, UserRegistrationSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.generics import GenericAPIView
@@ -43,3 +43,24 @@ class Logout(GenericAPIView):
         return Response({
                 'error' : 'No existe este usuario'
             }, status=status.HTTP_400_BAD_REQUEST)
+    
+class Register(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+
+            # Log the user in and generate tokens
+            login_serializer = self.serializer_class(data=request.data)
+            if login_serializer.is_valid():
+                user_serializer = UserSerializer(user)
+                return Response({
+                    'token': login_serializer.validated_data['access'],
+                    'refresh-token': login_serializer.validated_data['refresh'],
+                    'user': user_serializer.data,
+                    'message': 'Usuario registrado exitosamente y sesión iniciada.',
+                }, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
