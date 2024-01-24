@@ -1,13 +1,17 @@
 from django.contrib import admin
-from django.urls import path, include
-from authentication.views import Login, Logout, Register
+from django.urls import path, include, re_path
+from boards.views import ListBoardsView
+
+
 urlpatterns = [
     # Admin routes
     path('admin/', admin.site.urls),
 
-    path('login/', Login.as_view(), name='login' ),
-    path('logout/', Logout.as_view(), name='logout' ),
-    path('register/', Register.as_view(), name='register'),
+    path('boards/', ListBoardsView.as_view(), name='board-list'),
+
+
+    re_path(r'^auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.jwt')),
 
 
 ]
