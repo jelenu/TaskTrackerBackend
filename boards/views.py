@@ -83,17 +83,17 @@ class UpdateView(APIView):
 
             if list_id and not create_list:
                 try:
-                    task_list = List.objects.get(id=list_id, board__creator=request.user)
+                    list = List.objects.get(id=list_id, board__creator=request.user)
 
                     if delete_list:
                         # Eliminar lista
-                        task_list.delete()
+                        list.delete()
                     elif new_name:
-                        task_list.name = new_name
+                        list.name = new_name
                     if new_order is not None:
-                        task_list.order = new_order
+                        list.order = new_order
 
-                    task_list.save()
+                    list.save()
 
                 except List.DoesNotExist:
                     return Response({'error': f'List with id {list_id} not found for the user.'}, status=status.HTTP_404_NOT_FOUND)
@@ -124,7 +124,7 @@ class UpdateView(APIView):
                     if new_description:
                         card.description = new_description
                     if new_order is not None:
-                        task_list.order = new_order
+                        card.order = new_order
                     if new_list_id is not None:
                         try:
                             new_list = List.objects.get(id=new_list_id, board__creator=request.user)
