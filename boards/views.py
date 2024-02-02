@@ -102,7 +102,7 @@ class UpdateView(APIView):
             card_id = card_data.get('id')
             new_title = card_data.get('title')
             new_description = card_data.get('description')
-            new_order = list_data.get('order')
+            new_order = card_data.get('order')
             new_list_id = card_data.get('list_id')
             delete_card = card_data.get('delete', False)
             create_card = card_data.get('create', False)
