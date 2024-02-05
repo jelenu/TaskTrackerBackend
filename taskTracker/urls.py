@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('boards-list/', ListBoardsView.as_view(), name='board-list'),
-    path('boards/<int:pk>/', BoardDetailView.as_view(), name='board-detail'),
+    path('boards/<uuid:pk>/', BoardDetailView.as_view(), name='board-detail'),
     path('update/', UpdateView.as_view(), name='update'),
 
 
