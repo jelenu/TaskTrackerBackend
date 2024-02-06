@@ -25,3 +25,8 @@ class BoardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Board
         fields = ['id', 'name', 'lists']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['lists'] = sorted(representation['lists'], key=lambda x: x['order'])
+        return representation
