@@ -109,13 +109,14 @@ WSGI_APPLICATION = 'taskTracker.wsgi.application'
 #     }
 # }
 
-import dj_database_url
+
 
 DATABASES = {
-    'default': dj_database_url.parse(env('DATABASE_URL'))
-
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -164,6 +165,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "authentication.CustomUser"
 
-CORS_ORIGIN_WHITELIST = ["*"]
+CORS_ORIGIN_WHITELIST = ["http://192.168.133.1","http://localhost:3000"]
 
 CORS_ALLOW_CREDENTIALS = True
